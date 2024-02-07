@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:coffie_shop/services/db.dart';
 import 'package:coffie_shop/views/Mainpage.dart';
 import 'package:coffie_shop/views/components/modified_text.dart';
@@ -5,6 +7,7 @@ import 'package:coffie_shop/views/components/modified_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
 class AddProduct extends StatefulWidget {
@@ -22,6 +25,25 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
+    File? _selectedImg;
+    Future picimagefromgralary() async {
+      final returnedimg =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      setState(() {
+        if (returnedimg == null) return;
+        _selectedImg = File(returnedimg!.path);
+      });
+    }
+
+    Future picimagefromcamera() async {
+      final returnedimg =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      setState(() {
+        if (returnedimg == null) return;
+        _selectedImg = File(returnedimg!.path);
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -101,6 +123,33 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
               SizedBox(height: 20),
+              Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                    onPressed: () {
+                      picimagefromgralary();
+                    },
+                    child: Text("Pick image from galary")),
+              ),
+              SizedBox(height: 20),
+              Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextButton(
+                      onPressed: () {}, child: Text("Pick Image from camera"))),
+              SizedBox(height: 20),
+              _selectedImg != null
+                  ? Image.file(_selectedImg!)
+                  : Text("Please selece the image"),
               InkWell(
                 onTap: () async {
                   String id = randomAlpha(10);

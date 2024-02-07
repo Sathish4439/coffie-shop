@@ -1,6 +1,9 @@
 import 'package:coffie_shop/services/product.dart';
 import 'package:coffie_shop/services/proiver.dart';
+import 'package:coffie_shop/views/Mainpage.dart';
+import 'package:coffie_shop/views/paymentpage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -35,17 +38,19 @@ class CoffieDetailState extends State<CoffieDetail>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(Mainpage());
+                      },
                       icon: Icon(Icons.arrow_back),
                     ),
                     IconButton(
                       onPressed: () {
                         var product = Product(
-                          productdeiscrption: widget.des,
-                          productname: widget.name,
-                          productprice: amt.toString(),
-                          productimage: widget.image);
-                      productprovider.AddTofav(product);
+                            productdeiscrption: widget.des,
+                            productname: widget.name,
+                            productprice: amt.toString(),
+                            productimage: widget.image);
+                        productprovider.AddTofav(product);
                       },
                       icon: Icon(Icons.favorite_border),
                     )
@@ -127,38 +132,32 @@ class CoffieDetailState extends State<CoffieDetail>
               SizedBox(
                 height: 20,
               ),
-              Text(
-                "Description",
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Price",
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey.shade700,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "\u20B9$amt",
+                    style: GoogleFonts.poppins(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
               ),
               SizedBox(
-                height: 50,
+                height: 30,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        "Price",
-                        style: GoogleFonts.poppins(
-                          color: Colors.grey.shade700,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "\u20B9$amt",
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ),
                   InkWell(
                     onTap: () {
                       var product = Product(
@@ -170,7 +169,7 @@ class CoffieDetailState extends State<CoffieDetail>
                     },
                     child: Container(
                       height: MediaQuery.of(context).size.height / 15,
-                      width: MediaQuery.of(context).size.width / 2,
+                      width: MediaQuery.of(context).size.width / 3,
                       decoration: BoxDecoration(
                         color: Colors.brown,
                         borderRadius: BorderRadius.circular(12),
@@ -180,6 +179,32 @@ class CoffieDetailState extends State<CoffieDetail>
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "Add to cart",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(PaymentPage(price: amt));
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 15,
+                      width: MediaQuery.of(context).size.width / 3,
+                      decoration: BoxDecoration(
+                        color: Colors.brown,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Place Order",
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 12,
