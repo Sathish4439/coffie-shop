@@ -170,6 +170,7 @@ class _AddProductState extends State<AddProduct> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 16.0));
+                  Navigator.pop(context);
                 },
                 child: Container(
                   height: 50,

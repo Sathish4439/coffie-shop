@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffie_shop/services/db.dart';
+import 'package:coffie_shop/services/product.dart';
+import 'package:coffie_shop/services/proiver.dart';
 import 'package:coffie_shop/views/adminpanal.dart';
 import 'package:coffie_shop/views/components/coffiedetail.dart';
+import 'package:coffie_shop/views/profilepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 
 class Home extends StatelessWidget {
@@ -17,6 +21,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productprovider =
+        Provider.of<ProductProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(
@@ -57,12 +63,9 @@ class Home extends StatelessWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.to(Settings());
+                                  Get.to(Profilepage());
                                 },
-                                child: Hero(
-                                  tag: "profile",
-                                  child: Icon(Icons.person),
-                                ),
+                                child: Icon(Icons.person),
                               ),
                             ],
                           ),
@@ -125,80 +128,101 @@ class Home extends StatelessWidget {
                                               BorderRadius.circular(12),
                                         ),
                                         width: 200,
-                                        child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  child: Container(
-                                                    height: 150,
-                                                    width: 150,
-                                                    child: Image.network(
-                                                      ds["image"],
-                                                      fit: BoxFit.cover,
+                                        child: FittedBox(
+                                          child: Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    child: Container(
                                                       height: 150,
+                                                      width: 150,
+                                                      child: Image.network(
+                                                        ds["image"],
+                                                        fit: BoxFit.cover,
+                                                        height: 150,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                SizedBox(height: 10),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${ds["Name"]}",
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Price: ${ds["price"]}",
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                        ),
-                                                        InkWell(
-                                                          onTap: () {},
-                                                          child: Container(
-                                                            height: 30,
-                                                            width: 30,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12),
-                                                              color:
-                                                                  Colors.orange,
-                                                            ),
-                                                            child: Center(
-                                                              child: Icon(
-                                                                  Icons.add),
+                                                  SizedBox(height: 10),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "${ds["Name"]}",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                      ),
+                                                      SizedBox(height: 5),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Price: ${ds["price"]}",
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 50,
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              var product = Product(
+                                                                  productdeiscrption: ds[
+                                                                      "Description"],
+                                                                  productname: ds[
+                                                                      "name"],
+                                                                  productprice: ds[
+                                                                      "price"],
+                                                                  productimage:
+                                                                      ds["image"]);
+                                                              productprovider
+                                                                  .AddToCart(
+                                                                      product);
+                                                            },
+                                                            child: Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                color: Colors
+                                                                    .orange,
+                                                              ),
+                                                              child: Center(
+                                                                child: Icon(
+                                                                    Icons.add),
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
